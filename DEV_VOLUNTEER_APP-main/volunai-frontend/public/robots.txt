@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+
+Disallow: /admin
+Disallow: /admin2
+Disallow: /volunteer
+Disallow: /user
+Disallow: /api/
+
+Sitemap: https://volunai.app/sitemap.xml
