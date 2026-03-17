@@ -1,4 +1,4 @@
-// VolunAI — AI Intelligence Engine
+// CVAS — AI Intelligence Engine
 // Simulates NLP interpretation, multi-factor matching, acceptance prediction, and adaptive learning
 
 // ── Service type keywords for NLP extraction ──
@@ -108,7 +108,7 @@ function computeReliabilityScore(volunteer) {
 }
 
 // ── 3. Acceptance Prediction Model ──
-export function predictAcceptanceProbability(volunteer) {
+export function predictAcceptanceProbability(volunteer, _request) {
     // Simulate using past acceptance rate, response time, and workload
     const baseAcceptance = 0.65;
     const ratingBonus = (volunteer.rating / 5.0) * 0.20;
@@ -156,7 +156,6 @@ export function rankVolunteers(volunteers, request) {
             const scoring = computeMatchScore(volunteer, request);
             return { volunteer, ...scoring };
         })
-        .filter(m => m.totalScore > 0)
         .sort((a, b) => b.totalScore - a.totalScore);
 }
 

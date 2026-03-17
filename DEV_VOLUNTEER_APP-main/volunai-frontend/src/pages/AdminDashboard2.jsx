@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { authService, chatService, notificationService } from '../services/authService';
 import { MessageCircle, Bell, Users, ClipboardList, CheckCircle, Send } from 'lucide-react';
 
 export default function AdminDashboard2() {
-  const [user] = useState(() => authService.getCurrentUser());
+  const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('requests');
   const [requests, setRequests] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
@@ -14,26 +14,25 @@ export default function AdminDashboard2() {
   const [messageText, setMessageText] = useState('');
   const [showChat, setShowChat] = useState(false);
 
-  const loadData = useCallback(async (userId) => {
+  useEffect(() => {
+    const currentUser = authService.getCurrentUser();
+    setUser(currentUser);
+    loadData(currentUser?.id);
+  }, []);
+
+  const loadData = async (userId) => {
     const [reqRes, volRes, userRes, notifRes] = await Promise.all([
       fetch('/api/requests'),
       fetch('/api/volunteers'),
       fetch('/api/auth/users'),
       userId ? notificationService.getNotifications(userId, 'unread') : Promise.resolve([])
     ]);
-
+    
     setRequests(await reqRes.json());
     setVolunteers(await volRes.json());
     setUsers(await userRes.json());
     setNotifications(notifRes);
-  }, []);
-
-  useEffect(() => {
-    const init = async () => {
-      await loadData(user?.id);
-    };
-    init();
-  }, [loadData, user?.id]);
+  };
 
   const handleAssignVolunteer = async (requestId, volunteerId) => {
     await fetch(`/api/requests/${requestId}/assign/${volunteerId}`, { method: 'POST' });
@@ -118,10 +117,11 @@ export default function AdminDashboard2() {
                     <td className="p-2">{req.serviceType}</td>
                     <td className="p-2">{req.location}</td>
                     <td className="p-2">
-                      <span className={`px-2 py-1 rounded text-xs ${req.urgencyLevel === 'HIGH' ? 'bg-red-100 text-red-700' :
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        req.urgencyLevel === 'HIGH' ? 'bg-red-100 text-red-700' :
                         req.urgencyLevel === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-green-100 text-green-700'
-                        }`}>
+                        'bg-green-100 text-green-700'
+                      }`}>
                         {req.urgencyLevel}
                       </span>
                     </td>
@@ -165,8 +165,9 @@ export default function AdminDashboard2() {
                       <MessageCircle size={16} />
                     </button>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded ${vol.availabilityStatus === 'AVAILABLE' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                    }`}>
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    vol.availabilityStatus === 'AVAILABLE' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                  }`}>
                     {vol.availabilityStatus}
                   </span>
                 </div>
@@ -224,8 +225,9 @@ export default function AdminDashboard2() {
           <div className="h-64 overflow-y-auto p-4 space-y-2">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.senderId === user.id ? 'justify-end' : 'justify-start'}`}>
-                <div className={`px-3 py-2 rounded max-w-xs ${msg.senderId === user.id ? 'bg-indigo-100' : 'bg-gray-100'
-                  }`}>
+                <div className={`px-3 py-2 rounded max-w-xs ${
+                  msg.senderId === user.id ? 'bg-indigo-100' : 'bg-gray-100'
+                }`}>
                   {msg.messageText}
                 </div>
               </div>

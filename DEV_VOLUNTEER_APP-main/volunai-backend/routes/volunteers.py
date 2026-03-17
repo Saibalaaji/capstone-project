@@ -1,8 +1,9 @@
 """
-Volunteer CRUD API — matches the Java VolunteerController endpoints.
+Volunteer CRUD API.
 """
 from flask import Blueprint, request, jsonify
-from models import db, Volunteer
+from flask_jwt_extended import jwt_required
+from models import db, Volunteer, User
 
 bp = Blueprint("volunteers", __name__, url_prefix="/api/volunteers")
 
@@ -126,6 +127,35 @@ def delete_volunteer(vid):
 def get_active_volunteers():
     volunteers = Volunteer.query.filter_by(active=True).all()
     return jsonify([v.to_dict() for v in volunteers])
+
+
+@bp.route("/by-email/<string:email>", methods=["GET"])
+def get_volunteer_by_email(email):
+    """Find volunteer profile linked to a registered user's email."""
+    v = Volunteer.query.filter_by(email=email).first()
+    if not v:
+        return jsonify({"error": "Volunteer profile not found"}), 404
+    return jsonify(v.to_dict()), 200
+
+
+@bp.route("/stats", methods=["GET"])
+def get_volunteer_stats():
+    """Overall volunteer statistics for the admin panel."""
+    from models import Assignment
+    total = Volunteer.query.count()
+    active = Volunteer.query.filter_by(active=True).count()
+    available = Volunteer.query.filter_by(availability_status="AVAILABLE").count()
+    busy = Volunteer.query.filter_by(availability_status="BUSY").count()
+    completed = db.session.query(db.func.sum(Volunteer.completed_tasks)).scalar() or 0
+    avg_rating = db.session.query(db.func.avg(Volunteer.rating)).scalar() or 0
+    return jsonify({
+        "total": total,
+        "active": active,
+        "available": available,
+        "busy": busy,
+        "completedTasks": int(completed),
+        "avgRating": round(float(avg_rating), 2)
+    }), 200
 
 
 @bp.route("/<int:vid>/availability", methods=["PATCH"])

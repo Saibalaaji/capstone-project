@@ -1,5 +1,5 @@
 """
-SQLAlchemy database models for VolunAI.
+SQLAlchemy database models for CVAS.
 Mirrors the existing Java/JPA entities so the React frontend works unchanged.
 """
 from flask_sqlalchemy import SQLAlchemy

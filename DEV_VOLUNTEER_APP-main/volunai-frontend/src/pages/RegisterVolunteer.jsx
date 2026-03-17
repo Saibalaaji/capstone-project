@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, MapPin, Briefcase, Calendar, Home, CheckCircle2, XCircle, UserPlus } from 'lucide-react';
 import { createVolunteer } from '../services/api';
 
@@ -12,6 +12,7 @@ const SERVICE_TYPES = [
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 export default function RegisterVolunteer() {
+    const navigate = useNavigate();
     const [toast, setToast] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);

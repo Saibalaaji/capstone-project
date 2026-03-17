@@ -11,11 +11,11 @@ def init_sample_data():
         return
     
     # Create sample users
-    admin = User(name="Admin User", email="admin@volunai.com", contact_number="555-0001", location="New York", role="admin")
+    admin = User(name="Admin User", email="admin@cvas.com", contact_number="555-0001", location="New York", role="admin")
     admin.set_password("admin123")
     db.session.add(admin)
     
-    user1 = User(name="John Doe", email="user@volunai.com", contact_number="555-0002", location="Brooklyn", role="user")
+    user1 = User(name="John Doe", email="user@cvas.com", contact_number="555-0002", location="Brooklyn", role="user")
     user1.set_password("user123")
     db.session.add(user1)
     

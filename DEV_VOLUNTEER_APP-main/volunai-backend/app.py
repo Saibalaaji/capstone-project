@@ -1,9 +1,11 @@
 """
-VolunAI — Python ML Backend
+CVAS — Community Volunteer Assistance & Coordination System
+Python ML Backend
 Flask application entry-point.
 """
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from models import db
 from data_init import init_sample_data
 from routes import volunteers, requests, ai, assignments, auth, chat, notifications, approvals
@@ -15,10 +17,13 @@ def create_app():
     # ── Configuration ──
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///volunai.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["JWT_SECRET_KEY"] = "cvas-secret-key-2025"  # Change in production
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False  # Tokens don't expire for demo
 
     # ── Extensions ──
     db.init_app(app)
     CORS(app)  # allow React dev-server origin
+    JWTManager(app)
 
     # ── Register API blueprints ──
     app.register_blueprint(auth.bp)
@@ -41,7 +46,7 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     print("=" * 60)
-    print("  VolunAI — Python ML Backend")
+    print("  CVAS — Community Volunteer Assistance & Coordination System")
     print("  Server running on http://localhost:5000")
     print("  API docs: http://localhost:5000/api/")
     print("=" * 60)

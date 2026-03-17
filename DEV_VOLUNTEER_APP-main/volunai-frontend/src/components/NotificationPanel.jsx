@@ -1,24 +1,22 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { notificationService } from '../services/authService';
 import { Bell, X, Check } from 'lucide-react';
 
 export default function NotificationPanel({ userId, show, onClose }) {
   const [notifications, setNotifications] = useState([]);
 
-  const loadNotifications = useCallback(async () => {
-    if (!userId) return;
-    const data = await notificationService.getNotifications(userId);
-    setNotifications(data);
-  }, [userId]);
-
   useEffect(() => {
     if (show && userId) {
-      const init = async () => { await loadNotifications(); };
-      init();
+      loadNotifications();
       const interval = setInterval(loadNotifications, 5000);
       return () => clearInterval(interval);
     }
-  }, [show, userId, loadNotifications]);
+  }, [show, userId]);
+
+  const loadNotifications = async () => {
+    const data = await notificationService.getNotifications(userId);
+    setNotifications(data);
+  };
 
   const markAsRead = async (id) => {
     await notificationService.markAsRead(id);
@@ -58,7 +56,7 @@ export default function NotificationPanel({ userId, show, onClose }) {
           </button>
         </div>
       </div>
-
+      
       <div className="overflow-y-auto max-h-80">
         {notifications.length === 0 ? (
           <div className="p-8 text-center text-gray-400">
@@ -69,8 +67,9 @@ export default function NotificationPanel({ userId, show, onClose }) {
           notifications.map((notif) => (
             <div
               key={notif.id}
-              className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${notif.status === 'unread' ? 'bg-blue-50' : ''
-                }`}
+              className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${
+                notif.status === 'unread' ? 'bg-blue-50' : ''
+              }`}
               onClick={() => markAsRead(notif.id)}
             >
               <div className="flex justify-between items-start">

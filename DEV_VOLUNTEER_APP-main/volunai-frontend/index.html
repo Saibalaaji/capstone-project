@@ -1,97 +1,13 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ── Critical: Preload Inter font (LCP improvement) ── -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  </noscript>
-
-  <!-- ── Favicon (SVG scales perfectly, no extra HTTP requests) ── -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-  <!-- ── Primary SEO ── -->
-  <title>VolunAI – AI-Powered Volunteer Coordination</title>
-  <meta name="description"
-    content="VolunAI — autonomous volunteer coordination powered by AI-driven matching, NLP request understanding, and adaptive learning." />
-  <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#8b5cf6" />
-  <meta name="color-scheme" content="dark" />
-
-  <!-- ── Open Graph ── -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="VolunAI – AI-Powered Volunteer Coordination" />
-  <meta property="og:description"
-    content="Autonomous volunteer coordination powered by NLP, multi-factor matching, and adaptive learning." />
-  <meta property="og:locale" content="en_US" />
-
-  <!-- ── Twitter Card ── -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="VolunAI – AI-Powered Volunteer Coordination" />
-  <meta name="twitter:description"
-    content="Autonomous volunteer coordination powered by NLP, AI matching, and adaptive learning." />
-
-  <!-- ── Critical inline CSS: prevents flash of unstyled content ──
-         Only the absolute minimum needed before JS loads            -->
-  <style>
-    /* Prevent FOUC */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
-
-    html,
-    body,
-    #root {
-      height: 100%;
-      width: 100%
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0a0e1a;
-      color: #f1f5f9;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* Loading spinner shown before React mounts */
-    #root:empty::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 40px;
-      margin: 48vh auto 0;
-      border: 3px solid rgba(139, 92, 246, .2);
-      border-top-color: #8b5cf6;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg)
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CVAS — Community Volunteer Assistance &amp; Coordination System</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

@@ -3,6 +3,7 @@ Assistance Request API — matches the Java AssistanceRequestController endpoint
 When a request is created, the ML matching engine automatically suggests volunteers.
 """
 from flask import Blueprint, request as flask_request, jsonify
+from sqlalchemy import func
 from models import db, AssistanceRequest, Volunteer, Notification, User
 from ml.matching_engine import matching_engine
 from datetime import datetime
@@ -218,3 +219,47 @@ def delete_request(rid):
 def get_by_status(status):
     reqs = AssistanceRequest.query.filter_by(status=status.upper()).all()
     return jsonify([r.to_dict() for r in reqs])
+
+
+@bp.route("/stats", methods=["GET"])
+def get_request_stats():
+    """Aggregate request statistics for admin analytics."""
+    total = AssistanceRequest.query.count()
+    pending = AssistanceRequest.query.filter_by(status="PENDING").count()
+    assigned = AssistanceRequest.query.filter_by(status="ASSIGNED").count()
+    completed = AssistanceRequest.query.filter_by(status="COMPLETED").count()
+    high = AssistanceRequest.query.filter_by(urgency_level="HIGH").count()
+    medium = AssistanceRequest.query.filter_by(urgency_level="MEDIUM").count()
+    low = AssistanceRequest.query.filter_by(urgency_level="LOW").count()
+    # Service type breakdown
+    service_rows = db.session.query(
+        AssistanceRequest.service_type,
+        func.count(AssistanceRequest.id).label('cnt')
+    ).group_by(AssistanceRequest.service_type).all()
+    service_breakdown = {row[0]: row[1] for row in service_rows}
+    return jsonify({
+        "total": total, "pending": pending,
+        "assigned": assigned, "completed": completed,
+        "urgent": {"high": high, "medium": medium, "low": low},
+        "byServiceType": service_breakdown
+    }), 200
+
+
+@bp.route("/by-contact/<string:contact>", methods=["GET"])
+def get_by_contact(contact):
+    """Get all requests submitted by a specific contact (phone or email)."""
+    reqs = AssistanceRequest.query.filter(
+        AssistanceRequest.requester_contact == contact
+    ).order_by(AssistanceRequest.id.desc()).all()
+    result = []
+    for r in reqs:
+        assigned_volunteer = None
+        if r.assigned_volunteer_id:
+            vol = Volunteer.query.get(r.assigned_volunteer_id)
+            if vol:
+                assigned_volunteer = vol.name
+        d = r.to_dict()
+        d['assigned_volunteer_name'] = assigned_volunteer
+        result.append(d)
+    return jsonify(result), 200
+

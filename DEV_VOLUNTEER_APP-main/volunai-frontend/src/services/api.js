@@ -7,10 +7,28 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Attach JWT token to every request automatically
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('cvas_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ── Auth ──
+export const authRegister = (data) => api.post('/auth/register', data);
+export const authLogin = (data) => api.post('/auth/login', data);
+export const authMe = () => api.get('/auth/me');
+export const getUsers = (role) => api.get('/auth/users', { params: role ? { role } : {} });
+export const getUserById = (id) => api.get(`/auth/users/${id}`);
+
 // ── Volunteers ──
 export const getVolunteers = () => api.get('/volunteers');
 export const getActiveVolunteers = () => api.get('/volunteers/active');
 export const getVolunteerById = (id) => api.get(`/volunteers/${id}`);
+export const getVolunteerByEmail = (email) => api.get(`/volunteers/by-email/${encodeURIComponent(email)}`);
+export const getVolunteerStats = () => api.get('/volunteers/stats');
 export const getVolunteerRequests = (id) => api.get(`/volunteers/${id}/requests`);
 export const createVolunteer = (data) => api.post('/volunteers', data);
 export const updateVolunteer = (id, data) => api.put(`/volunteers/${id}`, data);
@@ -37,6 +55,8 @@ export const declineRequest = (requestId, volunteerId) =>
 export const completeRequestByVolunteer = (requestId, volunteerId) =>
   api.post(`/requests/${requestId}/complete/${volunteerId}`);
 export const deleteRequest = (id) => api.delete(`/requests/${id}`);
+export const getRequestStats = () => api.get('/requests/stats');
+export const getRequestsByContact = (contact) => api.get(`/requests/by-contact/${encodeURIComponent(contact)}`);
 
 // ── Assignments ──
 export const getAssignments = () => api.get('/assignments');
@@ -58,5 +78,16 @@ export const getLearningAnalytics = () =>
   api.get('/ai/enhanced/analytics');
 export const improveRecommendations = () =>
   api.post('/ai/enhanced/improve_recommendations');
+
+// ── Chat ──
+export const getMessages = (userId, otherId) =>
+  api.get(`/chat/messages`, { params: { userId, otherId } });
+export const sendMessage = (data) => api.post('/chat/messages', data);
+export const getConversations = (userId) => api.get(`/chat/conversations/${userId}`);
+
+// ── Notifications ──
+export const getNotifications = (userId) => api.get(`/notifications/${userId}`);
+export const markNotificationRead = (id) => api.patch(`/notifications/${id}/read`);
+export const markAllRead = (userId) => api.patch(`/notifications/read-all/${userId}`);
 
 export default api;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-VolunAI Synchronization Test Script
+CVAS Synchronization Test Script
 Tests the full workflow synchronization between Admin and Volunteer dashboards
 """
 
@@ -142,7 +142,7 @@ def test_completion_sync(request_id, volunteer_id):
                     print(f"   ✓ Volunteer {vol['name']} sees task as completed")
 
 def main():
-    print("VolunAI Synchronization Test")
+    print("CVAS Synchronization Test")
     print("=" * 50)
     
     try:

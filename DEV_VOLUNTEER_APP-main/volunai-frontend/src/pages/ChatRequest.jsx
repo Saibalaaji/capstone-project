@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Send, Bot, User, ArrowRight, Home, CheckCircle2, Sparkles, Brain, AlertTriangle, MapPin, Target } from 'lucide-react';
 import { createRequest, interpretRequestAI } from '../services/api';
@@ -7,7 +7,7 @@ import { createRequest, interpretRequestAI } from '../services/api';
 const STEPS = [
     {
         key: 'requesterName',
-        question: "Hi! I'm VolunAI 🤖 I'll help you request assistance. First, what is your **full name**?",
+        question: "Hi! I'm CVAS 🤖 I'll help you request assistance. First, what is your **full name**?",
         placeholder: 'e.g. Jane Smith',
         validate: v => v.trim().length >= 2,
         error: 'Please enter your name (at least 2 characters).',
@@ -75,27 +75,17 @@ export default function ChatRequest() {
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [createdRequest, setCreatedRequest] = useState(null);
+    const [nlpResult, setNlpResult] = useState(null);
     const [validating, setValidating] = useState(false);
     const bottomRef = useRef(null);
     const inputRef = useRef(null);
 
-    const pushBot = useCallback((text, extra = {}) => {
-        setMessages(m => [...m, { from: 'bot', text, ...extra }]);
-    }, []);
-
-    const pushUser = useCallback((text) => {
-        setMessages(m => [...m, { from: 'user', text }]);
-    }, []);
-
-    // ── Init: show first bot message only once (guard against StrictMode double-fire)
-    const initFiredRef = useRef(false);
+    // ── Init: show first bot message ───────────────────────────────────
     useEffect(() => {
-        if (initFiredRef.current) return;
-        initFiredRef.current = true;
         setTimeout(() => {
             pushBot(fillTemplate(STEPS[0].question, {}));
         }, 400);
-    }, [pushBot]);
+    }, []);
 
     // ── Auto-scroll ───────────────────────────────────────────────────
     useEffect(() => {
@@ -106,6 +96,13 @@ export default function ChatRequest() {
     useEffect(() => {
         inputRef.current?.focus();
     }, [currentStep]);
+
+    function pushBot(text, extra = {}) {
+        setMessages(m => [...m, { from: 'bot', text, ...extra }]);
+    }
+    function pushUser(text) {
+        setMessages(m => [...m, { from: 'user', text }]);
+    }
 
     // ── Handle user answer ────────────────────────────────────────────
     async function handleSend() {
@@ -128,6 +125,7 @@ export default function ChatRequest() {
             try {
                 const res = await interpretRequestAI(value);
                 const nlp = res.data;
+                setNlpResult(nlp);
                 // API returns camelCase: serviceType, urgencyLevel, confidence (string label)
                 const svcType = nlp.serviceType || nlp.service_type || updatedData.serviceType;
                 const urgency = nlp.urgencyLevel || nlp.urgency_level || 'MEDIUM';
@@ -200,7 +198,7 @@ export default function ChatRequest() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🤖</div>
                     <div>
-                        <div style={{ fontWeight: 700, fontSize: 17, color: '#f1f5f9' }}>VolunAI Chat</div>
+                        <div style={{ fontWeight: 700, fontSize: 17, color: '#f1f5f9' }}>CVAS Chat</div>
                         <div style={{ fontSize: 12, color: '#64748b' }}>AI-powered request assistant</div>
                     </div>
                 </div>
