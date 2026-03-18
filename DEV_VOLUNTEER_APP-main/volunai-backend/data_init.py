@@ -7,19 +7,24 @@ from models import db, Volunteer, AssistanceRequest, User
 
 def init_sample_data():
     """Populate the database with sample volunteers and requests if empty."""
+
+    # Always ensure admin and demo user accounts exist
+    if not User.query.filter_by(email="admin@cvas.com").first():
+        admin = User(name="Admin User", email="admin@cvas.com", contact_number="555-0001", location="New York", role="admin")
+        admin.set_password("admin123")
+        db.session.add(admin)
+        db.session.commit()
+        print("[OK] Admin user created: admin@cvas.com / admin123")
+
+    if not User.query.filter_by(email="user@cvas.com").first():
+        user1 = User(name="John Doe", email="user@cvas.com", contact_number="555-0002", location="Brooklyn", role="user")
+        user1.set_password("user123")
+        db.session.add(user1)
+        db.session.commit()
+
+    # Only seed volunteers/requests once
     if Volunteer.query.count() > 0:
         return
-    
-    # Create sample users
-    admin = User(name="Admin User", email="admin@cvas.com", contact_number="555-0001", location="New York", role="admin")
-    admin.set_password("admin123")
-    db.session.add(admin)
-    
-    user1 = User(name="John Doe", email="user@cvas.com", contact_number="555-0002", location="Brooklyn", role="user")
-    user1.set_password("user123")
-    db.session.add(user1)
-    
-    db.session.commit()
 
     volunteers = [
         _vol("Dr. Sarah Johnson", "sarah.johnson@email.com", "555-0101",

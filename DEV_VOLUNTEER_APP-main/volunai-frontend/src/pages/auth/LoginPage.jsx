@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Heart, ArrowRight, Users, CheckCircle2, Star, Handshake } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { authLogin as loginApi } from '../../services/api';
 
 const COMMUNITY_STATS = [
     { emoji: '🤝', label: 'Active Volunteers', value: '1,284' },
@@ -20,7 +19,7 @@ const TESTIMONIALS = [
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    const { login: authLogin } = useAuth();
+    const { login } = useAuth();
     const [form, setForm] = useState({ email: '', password: '' });
     const [showPw, setShowPw] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -38,14 +37,12 @@ export default function LoginPage() {
         setError('');
         setLoading(true);
         try {
-            const res = await loginApi({ email: form.email, password: form.password });
-            const { user, token } = res.data;
-            authLogin(user, token);
+            const user = await login(form.email, form.password);
             if (user.role === 'admin')          navigate('/admin');
             else if (user.role === 'volunteer') navigate('/volunteer');
             else                               navigate('/user');
         } catch (err) {
-            const msg = err.response?.data?.message || 'Incorrect email or password';
+            const msg = err.response?.data?.error || err.response?.data?.message || 'Incorrect email or password';
             setError(msg);
             setErrorShake(true);
             setTimeout(() => setErrorShake(false), 500);
