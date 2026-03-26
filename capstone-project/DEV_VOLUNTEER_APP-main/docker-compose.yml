@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: cvas_admin
+      POSTGRES_PASSWORD: cvas_password
+      POSTGRES_DB: cvas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build: 
+      context: ./volunai-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://cvas_admin:cvas_password@db:5432/cvas_db
+      - JWT_SECRET_KEY=cvas-prod-secret-key-change-me
+      - CORS_ORIGINS=http://localhost:3000
+    volumes:
+      - ./volunai-backend/uploads:/app/uploads
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    build:
+      context: ./volunai-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  postgres_data:
