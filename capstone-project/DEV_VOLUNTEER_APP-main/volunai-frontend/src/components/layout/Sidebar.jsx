@@ -39,20 +39,12 @@ const Sidebar = ({ role }) => {
   return (
     <aside className="w-72 bg-slate-900 border-r border-slate-800 flex flex-col h-screen sticky top-0">
       {/* Brand */}
-      <div className="p-8 pb-10">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-            <Heart size={20} fill="currentColor" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent italic">
-              VolunAI
-            </h1>
-            <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">
-              Community Sync
-            </p>
-          </div>
-        </div>
+      <div className="p-6 pb-8">
+        <img
+          src="/logo.png"
+          alt="அறம்சேவை logo"
+          style={{ height: 56, width: 'auto', objectFit: 'contain' }}
+        />
       </div>
 
       {/* Navigation */}

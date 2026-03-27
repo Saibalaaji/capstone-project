@@ -38,11 +38,12 @@ export default function LandingPage() {
                 padding: '0 40px', height: 64,
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg,#FF8C69,#FFB7A5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Heart size={18} fill="white" color="white" />
-                    </div>
-                    <span style={{ fontSize: 17, fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>VolunAI</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <img
+                        src="/logo.png"
+                        alt="அறம்சேவை logo"
+                        style={{ height: 44, width: 'auto', objectFit: 'contain' }}
+                    />
                 </div>
 
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -83,7 +84,7 @@ export default function LandingPage() {
                         with <span className="accent">kindness</span> + AI 🌻
                     </h1>
                     <p className="hero-subtitle">
-                        VolunAI connects people who need help with verified volunteers nearby — instantly, intelligently, and with heart.
+                        அறம்சேவை connects people who need help with verified volunteers nearby — instantly, intelligently, and with heart.
                     </p>
 
                     <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -255,13 +256,13 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* ── FOOTER ── */}
             <footer style={{ background: '#2D2D2D', padding: '40px', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', marginBottom: 12 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--coral)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Heart size={14} fill="white" color="white" />
-                    </div>
-                    <span style={{ color: 'white', fontWeight: 800 }}>VolunAI</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 12 }}>
+                    <img
+                        src="/logo.png"
+                        alt="அறம்சேவை logo"
+                        style={{ height: 48, width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.85 }}
+                    />
                 </div>
                 <p style={{ fontSize: 13 }}>Community Volunteer Assistance & Coordination System</p>
                 <p style={{ fontSize: 12, marginTop: 8 }}>Built with 🧡 for communities everywhere</p>

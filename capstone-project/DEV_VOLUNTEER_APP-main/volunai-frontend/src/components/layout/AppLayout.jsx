@@ -79,13 +79,11 @@ export default function AppLayout({
             <aside className="warm-sidebar">
                 {/* Brand */}
                 <div className="sidebar-brand">
-                    <div className="sidebar-logo-icon">
-                        <Heart size={20} fill="currentColor" />
-                    </div>
-                    <div className="sidebar-brand-text">
-                        <h1>VolunAI</h1>
-                        <span>Community Volunteer</span>
-                    </div>
+                    <img
+                        src="/logo.png"
+                        alt="அறம்சேவை logo"
+                        style={{ height: 52, width: 'auto', objectFit: 'contain' }}
+                    />
                 </div>
 
                 {/* Nav */}

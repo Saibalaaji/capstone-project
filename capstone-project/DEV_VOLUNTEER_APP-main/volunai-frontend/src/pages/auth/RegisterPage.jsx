@@ -158,19 +158,14 @@ export default function RegisterPage() {
         }}>
             <div style={{ width: '100%', maxWidth: 640 }}>
 
-                {/* ── Header ── */}
                 <div style={{ textAlign: 'center', marginBottom: 28 }}>
-                    <div style={{
-                        width: 64, height: 64, margin: '0 auto 16px',
-                        background: 'linear-gradient(135deg, var(--coral), var(--peach))',
-                        borderRadius: 'var(--radius-lg)', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center',
-                        boxShadow: 'var(--shadow-coral)',
-                    }}>
-                        <UserPlus size={28} color="white" />
-                    </div>
+                    <img
+                        src="/logo.png"
+                        alt="அறம்சேவை logo"
+                        style={{ height: 80, width: 'auto', objectFit: 'contain', margin: '0 auto 12px', display: 'block' }}
+                    />
                     <h1 style={{ fontSize: 28, fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.5px', marginBottom: 4 }}>
-                        Join VolunAI
+                        Join அறம்சேவை
                     </h1>
                     <p style={{ fontSize: 14, color: 'var(--text-muted)', fontWeight: 600 }}>
                         Step {step} of {totalSteps}: {stepLabel}

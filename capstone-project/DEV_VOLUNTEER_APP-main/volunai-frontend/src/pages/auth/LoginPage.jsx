@@ -12,7 +12,7 @@ const COMMUNITY_STATS = [
 
 const TESTIMONIALS = [
     { name: 'Priya S.',     role: 'Community Member', text: 'Got groceries delivered during my recovery. Amazing service! 🧡', avatar: 'P' },
-    { name: 'Carlos M.',    role: 'Volunteer',         text: 'Helping my neighbors through VolunAI has been deeply fulfilling.', avatar: 'C' },
+    { name: 'Carlos M.',    role: 'Volunteer',         text: 'Helping my neighbors through அறம்சேவை has been deeply fulfilling.', avatar: 'C' },
     { name: 'Aisha K.',     role: 'Community Member', text: 'Response was so fast — a volunteer was with me within the hour.', avatar: 'A' },
     { name: 'Tom B.',       role: 'Admin',             text: 'The AI matching makes volunteer coordination effortless.', avatar: 'T' },
 ];
@@ -58,19 +58,12 @@ export default function LoginPage() {
             {/* ── Left Panel: Community story ── */}
             <div className="auth-split-left">
                 {/* Brand */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 48, zIndex: 1 }}>
-                    <div style={{
-                        width: 44, height: 44, borderRadius: 12,
-                        background: 'linear-gradient(135deg, #FF8C69, #FFB7A5)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        boxShadow: '0 4px 16px rgba(255,140,105,0.3)',
-                    }}>
-                        <Heart size={22} fill="white" color="white" />
-                    </div>
-                    <div>
-                        <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>VolunAI</div>
-                        <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Community Volunteer System</div>
-                    </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
+                    <img
+                        src="/logo.png"
+                        alt="அறம்சேவை logo"
+                        style={{ height: 60, width: 'auto', objectFit: 'contain' }}
+                    />
                 </div>
 
                 {/* Headline */}
